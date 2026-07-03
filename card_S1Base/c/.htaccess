@@ -1,0 +1,3 @@
+<Files ~ "\.crt$">
+  deny from all
+</Files>
