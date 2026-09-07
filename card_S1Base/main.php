@@ -77,8 +77,8 @@ if (!isset($_COOKIE[Config::$cookieName])) {
             'okSoundElemId': 'beep_ok',						// カードタッチ成功時効果音要素のID
             'ngSoundElemId': 'beep_ng',						// カードタッチ失敗時効果音要素のID
             'playSound': true,								// カードタッチ後に効果音を鳴らすか否かの設定(true:鳴らす、false:鳴らさない)
-            'motionDetectNum' : [0,0,0,0,0,0,0,0],          // motion制御指定配列（配列の要素番号 0:motion制御有、1:設定なし(0 or -1固定)、2:下、3:上、4:左、5:右、6:右回転、7:左回転 の値を 閾値制御の場合 1 疑似アナログ制御の場合 2 にする。例えば、上下を閾値制御、左右回転をアナログ制御したい場合は、[2,-1,1,1,0,0,2,2]と指定する）
             'rotationDetect' : 0,                           // rotation判定指定配列（0:rotation判定無、1:rotation判定有、{判定有の場合、タッチパネルX座標軸の＋方向ベクトルと基準電極原点側から遠端側に向かうベクトルのなす角0°：callback.point=1、90°：2、180°：3、270°：4}とする。）
+            'motionDetectNum' : [0,0,0,0,0,0,0,0,0,0],      // motion制御指定配列（配列の要素番号 0:motion制御有、1:設定なし(0 or -1固定)、2～9:判定動作の指定、の値を 4条件閾値制御の場合 1、 疑似アナログ制御の場合 2、 8条件動作閾値判定の場合 3 にする。例えば、上下を閾値制御、左右をアナログ制御したい場合は、[2,-1,1,1,2,2,0,0,0,0]と指定する）
             'fixPosition' : false,                          // 動作判定、タッチ方向判定時のpositionの戻り値制御、false : position=analyze.point , true : position=1 cardId = cardId + "-" + analyze.point　＊動作判定、タッチ方向判定無しの場合、true/false関係なく callbacks['1']で、cardId = ID番号となる。
             'cardIdNum' : [],                               // 認証判定するID = CONFV8 の全ての場合、HTMLのコールバック関数内でID一致判定すること
             'touchWaitTime': 700,							// カード識別成功時に次のタッチを受け付けるまでのインターバル(msec)
@@ -111,7 +111,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
             /* S1系カードでタッチした時に呼ばれる処理 */
             '1': function(cardId) {
 
-                document.getElementById('name').style.backgroundColor = "#transparent";         //認証後は、表題の背景色を戻す。
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
 
                 let url='';
 
@@ -121,19 +121,19 @@ if (!isset($_COOKIE[Config::$cookieName])) {
 
                 } else if (cardId=="S1-1757" || cardId=="S1-1670") {
 
-                        url='https://multi-touchcard.com/MultiTouch-LLC/mtcvideo.html';
+                        url='https://multi-touchcard.com/MultiTouch-LLC/pages/mtcvideo.html';
                 }
 
                 var beepTimeOut = setTimeout(function() {
                     location.href = url;
                 }, _cardConf.touchWaitTime);
                     
-                return false;
+                return false;               //{'pageCtrl': false, 'restart': true};	//false
                 /* ↑↑↑画面遷移する場合の実装 falseを返却↑↑↑ */
             },
         
             /* カード解析エラー発生時に呼ばれる処理 */
-            'error': function(errorCode, errorMessage, errorId) {
+            'error': function(errorCode, errorMessage, errorId) { // _cardConf.onErrorCallbackKey: function(errorCode, errorMessage, errorId) {
                 /*
                  * errorCode 0: 正常, 1: 識別エラー, 3: 処理エラー
                  * エラーコードが1の場合は無視しても問題ないが3の場合は処理に何らかの不具合が発生した場合となるので要状況確認
@@ -162,6 +162,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
         var readyFunc = function(e) {
             if (typeof initCtrl !== 'undefined') {
                 analyzer = initCtrl(callbacks, cardConf);
+                //analyzer.enableScrollAction = true;// ←1本指での操作を許容する場合はコメントアウトを解除(スクロール、対象を要素にした場合はクリックイベントにも影響有り)
             }
         };
         
@@ -170,7 +171,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
 	        window.addEventListener('DOMContentLoaded', readyFunc, isPassive ? {passive: false, capture: false} : false);
         })();
 
-        window.addEventListener('pageshow', function(event){ if(event.persisted) { location.reload();}});   //20251020  ブラウザの戻るボタンで戻った場合、リロードする
+        window.addEventListener('pageshow', function(event){ if(event.persisted) { location.reload();}});   //ブラウザの戻るボタンで戻った場合、リロードする
 
         </script>
         

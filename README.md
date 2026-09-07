@@ -13,14 +13,16 @@
     ccards1_rm_sdk  
       - /card_S1Base            : SDK原本。これをコピーして新しいSDKを生成する。  
           - /c                  : conf.php , server.crt => conf.phpに暗号化したIDCodeをコピペする。server.crtで、期限管理する  
-          - /css                : style.css    
+          - /css                : style.css
+          - /docs               : User提供ドキュメント
+            - /sample           : HTMLサンプルファイル    
           - /f                  : func.php => サーバ側function。復号化等の関数    
           - /img                : touch.png => サンプルページのタッチ領域表示  
           - /res/beeps          : pass.mp3 , warning.mp3 => Pass , Fail の効果音  
           - /script             : analyzerm-s1t4u3-ob.js , cardrm-s1t4u3-ob.php , ctrlrm.js => アナライザソースファイル格納  
             - /c                : cs1.php => 提供SDKで使えるIDパターン。ファイル名は、cs1.php 固定    
           - index.php           : 初期アクセスページ。内容固定。   
-          - main.php , main2.php , main3.php , main3.php , main4.php , main5.php  : phpコードの下に/htmlSampleの下にあるHTMLに対応したHTMLコードが格納される。  
+          - main.php            : phpコードの下にHTMLコードが記載されている。
       - /cert_s1                : SDK作成途中生成ディレクトリ。GitHab管理対象外。  
       - /Documents              : SDKマニュアル、SDK作成方法説明資料、案件メモ(生成したSDKの product情報を記載)等  
       - /htmlSample             : main.php に記載するHTMLのサンプル例。現状のmain.php〜main5.phpに対応。  
@@ -41,13 +43,16 @@
 
 ## アナライザバージョン
 
-- analyzerm-s1t4u3-ob.js  Rev.3.2.6 20260529
-- cardrm-s1t4u3-ob.js  Rev.3.0.4 20260204
+- analyzerm-s1t4u3-ob.js  Rev4.0.0	20260828
+- cardrm-s1t4u3-ob.js  Rev.3.0.5 20260729
 - ctrlmr.js Rev.3.2.1 20260204
 
       
 ## 来歴
 
 - GitHab管理のためデイレクトリ構造見直し。GitHab登録　20260703
+- タッチ座標解析データ配列touchDataArryの3次元配列化 20260729
+- 動作判定に45度方向判定追加。動作判定のOrigin IdとMotion Id の一致判定を追加。 20260828
+
 
 
