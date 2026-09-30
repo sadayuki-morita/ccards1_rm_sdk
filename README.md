@@ -37,14 +37,14 @@
 
 ## SDKの基本的な作成方法
 
-  - 詳細は、/Documents/マルチタッチカードSDK(2点式)について.md に記載。
+  - 詳細は、PKB_SDK_20250526/マルチタッチカードSDK(2点式)について.md に記載。
   - また、/tempのconfv8_IDselect_gen_20260528.html をLive Server で開いて、IDとファイル名をInput欄に入れて実行すると、ダウンロードホルダにIDを抽出して暗号化したCONFV8配列が生成出来る。
 
 
 ## アナライザバージョン
 
-- analyzerm-s1t4u3-ob.js  Rev4.0.0	20260828
-- cardrm-s1t4u3-ob.js  Rev.3.0.5 20260729
+- analyzerm-s1t4u3-ob.js  Rev.4.0.1	20260918
+- cardrm-s1t4u3-ob.js  Rev.3.0.6 20260925
 - ctrlmr.js Rev.3.2.1 20260204
 
       
@@ -53,6 +53,7 @@
 - GitHab管理のためデイレクトリ構造見直し。GitHab登録　20260703
 - タッチ座標解析データ配列touchDataArryの3次元配列化 20260729
 - 動作判定に45度方向判定追加。動作判定のOrigin IdとMotion Id の一致判定を追加。 20260828
+- motionAnalogOut配列に重心座標追加、touchAnalysisEnable=falseの非解析用HTMLで、cardConfとID座標変換後座標配列のコンソール出力無し  20260929
 
 
 

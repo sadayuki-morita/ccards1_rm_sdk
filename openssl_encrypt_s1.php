@@ -522,7 +522,7 @@ $array = array(/*20260601現在で試作で作成したS1系列ID1系列のID v4
 //$keyFilePath = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/cert_s1/card_rm_dbg_20260128/server.key";//タッチ方向判定x動作判定アナライザ版デバッグ
 //$keyFilePath = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/cert_s1/card_rms1_clm20260224/server.key";//20260224 CoLaboMix様向けデバック用
 //$keyFilePath = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/cert_s1/card_rm_dbg_20260305/server.key";//20260304 山口証券印刷様デモページ用アクスタ3次、プレート試作用
-$keyFilePath = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/cert_s1/card_rm_dbg_20260907/server.key";//20260907 タッチ方向✕8条件動作判定版アナライザデバッグ用
+$keyFilePath = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/cert_s1/card_rm_dbg_20260930/server.key";//20260930 重心座標追加版アナライザver4.0.1 SDKデバッグ用
 
 
 $encrypt = null;
@@ -574,7 +574,7 @@ function decrypt($value) {
 	//$path = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/card_rm_dbg_20260128/c/server.crt";//タッチ方向判定x動作判定アナライザ版デバッグ
 	//$path = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/card_rms1_clm20260224/c/server.crt";//20260224 CoLaboMix様向けデバック用
 	//$path = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/card_rm_dbg_20260305/c/server.crt";//20260304 山口証券印刷様デモページ用アクスタ3次、プレート試作用
-	$path = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/card_rm_dbg_20260907/c/server.crt";//20260907 タッチ方向✕8条件動作判定版アナライザデバッグ用
+	$path = "/home/morita/Documents/dev/sdk/PKB_SDK_20250526/pub_imlsdk/ccards1_rm_sdk/card_rm_dbg_20260930/c/server.crt";//20260930 重心座標追加版アナライザver4.0.1 SDKデバッグ用
 
 
 	try {
