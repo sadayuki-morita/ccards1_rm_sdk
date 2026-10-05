@@ -40,6 +40,14 @@
   - 詳細は、PKB_SDK_20250526/マルチタッチカードSDK(2点式)について.md に記載。
   - また、/tempのconfv8_IDselect_gen_20260528.html をLive Server で開いて、IDとファイル名をInput欄に入れて実行すると、ダウンロードホルダにIDを抽出して暗号化したCONFV8配列が生成出来る。
 
+  - 作成したSDKに対して、ユーザーの使用するモードに依って提供するドキュメントを変えるため、/docs、/docs/sampleに格納されているドキュメントを必要なものを残し、不要なものを削除すること。
+    - ID認証の場合
+        /docs：MTC_Authentication_SDK_manual_i_4.0.1.pdf　と　マルチタッチカード SDK 構成図 rm_rev1.1.pdf　を残し他は削除
+        /docs/sample：main1.php、main2.php　を残し他は削除
+    - タッチ方向、動作判定の場合
+        /docs：MTC_Authentication_SDK_manual_i_4.0.1.pdf　を削除し、他のファイルはすべて残す
+        /docs/sample：すべてのファイル（main1.php〜main7.php）を残す
+
 
 ## アナライザバージョン
 
@@ -54,6 +62,7 @@
 - タッチ座標解析データ配列touchDataArryの3次元配列化 20260729
 - 動作判定に45度方向判定追加。動作判定のOrigin IdとMotion Id の一致判定を追加。 20260828
 - motionAnalogOut配列に重心座標追加、touchAnalysisEnable=falseの非解析用HTMLで、cardConfとID座標変換後座標配列のコンソール出力無し  20260929
+- ID認証版とタッチ方向動作判定版の2種類のSDKを作成できる様に両方に必要なファイルを保持し、個別SDK作成後に不要ファイルを削除する方式に変更　20261005
 
 
 

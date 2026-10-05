@@ -53,7 +53,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
     <meta http-equiv="expires" content="0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-    <title>C-Card SDK sample5</title>
+    <title>C-Card SDK Sample7</title>
     <!-- ↓↓↓ 必須ファイルの読込 ↓↓↓ -->
 	<script type="text/javascript" src="./script/ctrlrm.js" defer></script>
     <script type="text/javascript" src="./script/analyzerm-s1t4u3-ob.js" defer></script>
@@ -92,7 +92,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
             'initModalDoneElemId : 'init_modal_done',		// メディア読込用モーダルを閉じる(ボタン)要素のID
             'commonErrorMsg : 'カードが認識出来ませんでした。', // 汎用エラーメッセージ
         */
-            'motionDetectNum' : [1,-1,1,1,1,1,0,0,0,0],     // motion制御指定配列（配列の要素番号 0:motion制御有、1:設定なし(0 or -1固定)、2～9:判定動作の指定、の値を 4条件閾値制御の場合 1、 疑似アナログ制御の場合 2、 8条件動作閾値判定の場合 3 にする。例えば、上下を閾値制御、左右をアナログ制御したい場合は、[2,-1,1,1,2,2,0,0,0,0]と指定する）
+            'motionDetectNum' : [3,-1,1,1,1,1,1,1,1,1],     // motion制御指定配列（配列の要素番号 0:motion制御有、1:設定なし(0 or -1固定)、2～9:判定動作の指定、の値を 4条件閾値制御の場合 1、 疑似アナログ制御の場合 2、 8条件動作閾値判定の場合 3 にする。例えば、上下を閾値制御、左右をアナログ制御したい場合は、[2,-1,1,1,2,2,0,0,0,0]と指定する）
             'fixPosition' : false,                          // 動作判定、タッチ方向判定時のpositionの戻り値制御、false : position=analyze.point , true : position=1 cardId = cardId + "-" + analyze.point　＊動作判定、タッチ方向判定無しの場合、true/false関係なく callbacks['1']で、cardId = ID番号となる。
             'rotationDetect' : 1,                           // rotation判定指定配列（0:rotation判定無、1:rotation判定有、{判定有の場合、タッチパネルX座標軸の＋方向ベクトルと基準電極原点側から遠端側に向かうベクトルのなす角0°：callback.point=1、90°：2、180°：3、270°：4}とする。）
         };
@@ -109,14 +109,13 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
 
                 console.log('start_analyze');
-                setTimeout(() => {
-                    document.getElementById('name').style.backgroundColor = "transparent";           //touchWaitTime後表題の背景色を戻す
-                }, _cardConf.touchWaitTime);
-                
+
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+
             },
         
             /* S1系カードでタッチした時に呼ばれる処理 */
-            /*
+/*
             // ID認証 'position番号' = '1'　設定：cardConf.rotationDetect = 0, cardConf.motionDetectNum[0] = 0 (デフォルト設定)
             '1': function(cardId) {                                     //ID認証した場合
                 console.log('RN=1, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
@@ -124,7 +123,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 document.getElementById('i1message').style.color = "#f90505ff";
                 document.getElementById("i1text").innerHTML+="RN=1, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
-                return true;
+		        return true;
             },
             //
 
@@ -163,8 +162,8 @@ if (!isset($_COOKIE[Config::$cookieName])) {
             },
             //
 
-            // 動作判定 'position番号' = '2'〜'5'　設定：cardConf.rotationDetect = 0, cardConf.motionDetectNum[0] = 1 又は 2
-            '2': function(cardId) {                                     //画面下方向に10mm程度移動検知　でID認証した場合
+            // 動作判定 'position番号' = '2'〜'9'　設定：cardConf.rotationDetect = 0, cardConf.motionDetectNum[0] = 1 又は 2
+            '2': function(cardId) {                                     //画面右方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=2, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#f9e905ff";
@@ -172,7 +171,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '3': function(cardId) {                                     //画面上方向に10mm程度移動検知　でID認証した場合
+            '3': function(cardId) {                                     //画面右上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=3, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#05e9f9ff";
@@ -180,7 +179,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '4': function(cardId) {                                     //画面右方向に10mm程度移動検知　でID認証した場合
+            '4': function(cardId) {                                     //画面上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=4, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#e005f9ff";
@@ -188,7 +187,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '5': function(cardId) {                                     //画面左方向に10mm程度移動検知　でID認証した場合
+            '5': function(cardId) {                                     //画面左上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=5, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#9705f9ff";
@@ -196,9 +195,39 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            */
-            // タッチ方向判定×動作判定 'position番号' = '12'〜'45'　設定：cardConf.rotationDetect = 1, cardConf.motionDetectNum[0] = 1 又は 2
-            '12': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、面下方向に10mm程度移動検知　でID認証した場合
+            '6': function(cardId) {                                     //画面左方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=6, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#0521f9";
+                document.getElementById("i1text").innerHTML+="RN=6, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '7': function(cardId) {                                     //画面左下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=7, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#14504d";
+                document.getElementById("i1text").innerHTML+="RN=7, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },            
+            '8': function(cardId) {                                     //画面下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=8, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f90521";
+                document.getElementById("i1text").innerHTML+="RN=8, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+		        return true;
+            },
+            '9': function(cardId) {                                     //画面右下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=9, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#05e0f9";
+                document.getElementById("i1text").innerHTML+="RN=9, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+		        return true;
+            },
+*/
+            // タッチ方向判定×動作判定 'position番号' = '12'〜'49'　設定：cardConf.rotationDetect = 1, cardConf.motionDetectNum[0] = 1 又は 2
+            '12': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面右方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=12, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#f7e336ff";
@@ -206,7 +235,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '13': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、面上方向に10mm程度移動検知　でID認証した場合
+            '13': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面右上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=13, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#39dacfff";
@@ -214,22 +243,55 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '14': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面右方向に10mm程度移動検知　でID認証した場合
+            '14': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=14, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#06450dff";
                 document.getElementById("i1text").innerHTML+="RN=14, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '15': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+            '15': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面左上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=15, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#f09041ff";
                 document.getElementById("i1text").innerHTML+="RN=15, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
-                return true;
+		        return true;
             },
-            '22': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、面下方向に10mm程度移動検知　でID認証した場合
+            '16': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=16, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f7e336ff";
+                document.getElementById("i1text").innerHTML+="RN=16, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '17': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面左下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=17, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#39dacfff";
+                document.getElementById("i1text").innerHTML+="RN=17, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '18': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=18, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#06450dff";
+                document.getElementById("i1text").innerHTML+="RN=18, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '19': function(cardId) {                                     //タッチ方向：前向き(0度)かつ、画面右下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=19, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f09041ff";
+                document.getElementById("i1text").innerHTML+="RN=19, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '22': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面右方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=22, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#521111ff";
@@ -237,7 +299,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '23': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、面上方向に10mm程度移動検知　でID認証した場合
+            '23': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面右上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=23, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#ab3535ff";
@@ -253,7 +315,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '25': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+            '25': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面左上方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=25, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#6e7089ff";
@@ -261,7 +323,39 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
-            '32': function(cardId) {                                     //タッチ方向：後向き(180度)かつ、面下方向に10mm程度移動検知　でID認証した場合
+            '26': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=26, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#521111ff";
+                document.getElementById("i1text").innerHTML+="RN=26, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '27': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面左下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=27, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#ab3535ff";
+                document.getElementById("i1text").innerHTML+="RN=27, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '28': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=28, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#adf1a2ff";
+                document.getElementById("i1text").innerHTML+="RN=28, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '29': function(cardId) {                                     //タッチ方向：右向き(90度)かつ、画面右下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=29, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#6e7089ff";
+                document.getElementById("i1text").innerHTML+="RN=29, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '32': function(cardId) {                                     //タッチ方向：後向き(180度)かつ、画面下方向に10mm程度移動検知　でID認証した場合
                 console.log('RN=32, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#980909ff";
@@ -290,6 +384,38 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#f97705ff";
                 document.getElementById("i1text").innerHTML+="RN=35, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '36': function(cardId) {                                     //タッチ方向：前向き(180度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=36, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f7e336ff";
+                document.getElementById("i1text").innerHTML+="RN=36, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '37': function(cardId) {                                     //タッチ方向：前向き(180度)かつ、画面左下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=37, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#39dacfff";
+                document.getElementById("i1text").innerHTML+="RN=37, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '38': function(cardId) {                                     //タッチ方向：前向き(180度)かつ、画面下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=38, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#06450dff";
+                document.getElementById("i1text").innerHTML+="RN=38, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '39': function(cardId) {                                     //タッチ方向：前向き(180度)かつ、画面右下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=39, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f09041ff";
+                document.getElementById("i1text").innerHTML+="RN=39, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
@@ -322,6 +448,38 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
                 document.getElementById('i1message').style.color = "#f77a7aff";
                 document.getElementById("i1text").innerHTML+="RN=45, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '46': function(cardId) {                                     //タッチ方向：前向き(270度)かつ、画面左方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=46, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f7e336ff";
+                document.getElementById("i1text").innerHTML+="RN=46, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '47': function(cardId) {                                     //タッチ方向：前向き(270度)かつ、画面左下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=47, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#39dacfff";
+                document.getElementById("i1text").innerHTML+="RN=47, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '48': function(cardId) {                                     //タッチ方向：前向き(270度)かつ、画面下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=48, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#06450dff";
+                document.getElementById("i1text").innerHTML+="RN=48, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+		        return true;
+            },
+            '49': function(cardId) {                                     //タッチ方向：前向き(270度)かつ、画面右下方向に10mm程度移動検知　でID認証した場合
+                console.log('RN=49, ',cardId,", r=",parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))," , X= ",parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))," , Y= ",parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))," , A= ",parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1)));
+                document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
+                document.getElementById('i1message').style.color = "#f09041ff";
+                document.getElementById("i1text").innerHTML+="RN=49, " + cardId + ", r="+ parseFloat(_cardAnalyzer.touchAngleDeg.toFixed(1))+", X="+parseFloat(_cardAnalyzer.motionAnalogOut[0].toFixed(1))+", Y="+parseFloat(_cardAnalyzer.motionAnalogOut[1].toFixed(1))+", A="+parseFloat(_cardAnalyzer.motionAnalogOut[2].toFixed(1))+ "<br>";
                 setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
 		        return true;
             },
@@ -375,9 +533,9 @@ if (!isset($_COOKIE[Config::$cookieName])) {
         
 <body>
 <div id="contents">	
-    <h1 id="name" style="background-color:transparent;">C-Card SDK Sample5</h1>
+    <h1 id="name" style="background-color:transparent;">C-Card SDK Sample7</h1>
     	<p id="i1message" style="font-size: 7vw;">Multi touch card touched</p>
-		<p id="i1text" style="font-size: 5vw;">サンプルのタッチ方向を前向き、後向き、左向き、右向きと変えてタッチして、上、下、左、右に１ｃｍ程度動かす。<br></p>	
+		<p id="i1text" style="font-size: 5vw;">サンプルのタッチ方向を前向き、後向き、左向き、右向きと変えてタッチして、右、右上、上、左上、左、左下、下、右下に１ｃｍ程度動かす。<br></p>	
 	<!-- ↑↑↑ 別ページに遷移しない場合の実装例、以下のパラメータを使わない。↑↑↑ -->             
     <!--    'defaultContentsId': 'default_contents',		// 初期表示要素のID
             'variableContentsClass': '.variable_contents',	// 動的表示切替要素のクラス↑↑↑ -->

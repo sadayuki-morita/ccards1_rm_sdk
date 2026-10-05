@@ -116,3 +116,26 @@ html, body {
 .link { 
 	text-decoration: none; 
 }
+
+/* homeボタン用CSS */
+#floating_button_area { 
+	right:  10px;
+	bottom: 5px; 
+	position: fixed; 
+	z-index: 1; 
+}
+
+.float_button { 
+	width: 70px; 
+	font-size: 24px; 
+	font-weight: bold; 
+	text-decoration: none; 
+	display: block; 
+	text-align: center; 
+	font-size: 10pt; 
+	padding: 7px 0 5px;
+	color: #fff;
+	background-color: #ffa035; 
+	border-radius: 50px; 
+}
+

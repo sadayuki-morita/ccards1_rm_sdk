@@ -62,10 +62,11 @@ if (!isset($_COOKIE[Config::$cookieName])) {
     <script>
         var analyzer = null;// カード解析処理
 
-        /****************************************************************
-         * カード解析処理制御設定
+        /*******************************************************************************
+         * カード解析処理制御設定 (実際に導入される際は解説関係のコメントは削除願います)
          * この設定値は初期値です。必要に応じて有効化して値を設定して下さい
-         ****************************************************************/
+         *******************************************************************************/
+        /*/ ↓↓↓ この変数は必要に応じて有効化して下さい ↓↓↓ */
         var cardConf = {
         /*
             'touchElement': 'touch',						// タッチを受け付ける要素(ID又は要素で指定)
@@ -77,15 +78,15 @@ if (!isset($_COOKIE[Config::$cookieName])) {
             'okSoundElemId': 'beep_ok',						// カードタッチ成功時効果音要素のID
             'ngSoundElemId': 'beep_ng',						// カードタッチ失敗時効果音要素のID
             'playSound': true,								// カードタッチ後に効果音を鳴らすか否かの設定(true:鳴らす、false:鳴らさない)
-            'rotationDetect' : 0,                           // rotation判定指定配列（0:rotation判定無、1:rotation判定有、{判定有の場合、タッチパネルX座標軸の＋方向ベクトルと基準電極原点側から遠端側に向かうベクトルのなす角0°：callback.point=1、90°：2、180°：3、270°：4}とする。）
             'motionDetectNum' : [0,0,0,0,0,0,0,0,0,0],      // motion制御指定配列（配列の要素番号 0:motion制御有、1:設定なし(0 or -1固定)、2～9:判定動作の指定、の値を 4条件閾値制御の場合 1、 疑似アナログ制御の場合 2、 8条件動作閾値判定の場合 3 にする。例えば、上下を閾値制御、左右をアナログ制御したい場合は、[2,-1,1,1,2,2,0,0,0,0]と指定する）
+            'rotationDetect' : 0,                           // rotation判定指定配列（0:rotation判定無、1:rotation判定有、{判定有の場合、タッチパネルX座標軸の＋方向ベクトルと基準電極原点側から遠端側に向かうベクトルのなす角0°：callback.point=1、90°：2、180°：3、270°：4}とする。）
             'fixPosition' : false,                          // 動作判定、タッチ方向判定時のpositionの戻り値制御、false : position=analyze.point , true : position=1 cardId = cardId + "-" + analyze.point　＊動作判定、タッチ方向判定無しの場合、true/false関係なく callbacks['1']で、cardId = ID番号となる。
             'cardIdNum' : [],                               // 認証判定するID = CONFV8 の全ての場合、HTMLのコールバック関数内でID一致判定すること
             'touchWaitTime': 700,							// カード識別成功時に次のタッチを受け付けるまでのインターバル(msec)
 	        'touchedClearInterval : 200,					// タッチイベント終了後に蓄積している座標を初期化するまでのインターバル(msec)
             'transitTouchWaitTime': 25,						// motion制御カード移動中の識別成功時に次のタッチを受け付けるまでのインターバル(msec)
-            'motionAnalogOut : [0,0,0,0],                   // 動作変化のデルタ値(=変化量/閾値)格納 motionAnalogOut = [deltaX,deltaÝ,deltaangle,deltaTime]
-            'touchAngleDeg : 0,                             // タッチ方向判定回転角		20250630
+            'motionAnalogOut : [0,0,0,0,0,0],               // 動作変化のデルタ値(=変化量/閾値),重心座標格納 motionAnalogOut = [deltaX,deltaÝ,deltaangle,deltaTime,centroidX,centroidY]
+            'touchAngleDeg : 0,                             // タッチ方向判定回転角
             'showErrorAlert : true,							// エラーアラート表示フラグ
             'initModalElemId : 'init_modal',				// メディア読込用モーダルの要素のID
             'initModalDoneElemId : 'init_modal_done',		// メディア読込用モーダルを閉じる(ボタン)要素のID
@@ -106,6 +107,9 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
 
                 console.log('start_analyze');
+
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+
             },
         
             /* S1系カードでタッチした時に呼ばれる処理 */
@@ -143,6 +147,9 @@ if (!isset($_COOKIE[Config::$cookieName])) {
                 /* 必要に応じて処理を実装 */
                 document.getElementById('name').style.backgroundColor = "#baffab";           //5point揃って解析中は、表題の背景色を変える
 
+                console.log('[' + analyzer.getErrorMessage(errorCode) + ']', errorMessage, errorId," , rX= - , rY= - , rA= -");
+                setTimeout(() => { document.getElementById('name').style.backgroundColor = "transparent"; }, _cardConf.touchWaitTime);
+
             }
         };
         
@@ -173,7 +180,7 @@ if (!isset($_COOKIE[Config::$cookieName])) {
 
         window.addEventListener('pageshow', function(event){ if(event.persisted) { location.reload();}});   //ブラウザの戻るボタンで戻った場合、リロードする
 
-        </script>
+    </script>
         
 </head>
         
